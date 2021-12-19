@@ -6,10 +6,11 @@ Using this repository, a linear model can be trained to predict the quality of a
     of the 4 biggest components.
 4. "seg in lung" : the percentage of the segmented (as infectious tissue) area, that lies 
     within the segmentation of the lung 
+    
+The classes range from 1 to 5, getting displayed as 0.2(corresponding to 1 and being the worst) to 1.0(corresponding to 5 and being the best) during inference. In our experiments we declared segmentations with a score of less or equal to 0.6 as 'failed'. 
 
 ## Installation
 The simplest way to install all dependencies is by using [Anaconda](https://conda.io/projects/conda/en/latest/index.html):
-
 
 1. Create a Python3.8 environment as follows: `conda create -n <your_anaconda_env> python=3.8` and activate the environment.
 2. Install CUDA and PyTorch through conda with the command specified by [PyTorch](https://pytorch.org/). The command for Linux was at the time `conda install pytorch torchvision cudatoolkit=10.2 -c pytorch`. The code was developed and last tested with the PyTorch version 1.6.
