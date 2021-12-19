@@ -78,13 +78,7 @@ After sucessfull termination, the `metrics.json` file is generated under '*--dat
 ```
 {	
     "patient_00":	{
-                        "LFC": true,
-                        "blur": 0.5,
-                        "ghosting": 0.72,
-                        "motion": 0.98,
-                        "noise": 0.67,
-                        "resolution": 0.82,
-                        "spike": 0.96
+                        TODO
                     },
     ...
 }
