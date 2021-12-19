@@ -14,7 +14,7 @@ os.environ["CUDA_FOR_LUNG_SEG"] = 'cuda:0'
 #set environmental variables
 #for data_dirs folder, nothing changed compared to Simons version 
 os.environ["WORKFLOW_DIR"] = os.path.join(JIP_dir, 'data_dirs')
-os.environ["OPERATOR_IN_DIR"] = "input_small"
+os.environ["OPERATOR_IN_DIR"] = "input"
 os.environ["OPERATOR_OUT_DIR"] = "output"
 os.environ["OPERATOR_TEMP_DIR"] = "temp"
 os.environ["OPERATOR_PERSISTENT_DIR"] = os.path.join(JIP_dir, 'data_dirs', 'persistent')
