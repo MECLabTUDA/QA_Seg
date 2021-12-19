@@ -1,10 +1,10 @@
 # Quality monitoring of federated Covid-19 lesion quantification
-Using this repository, a linear model can be trained to predict the quality of a predicted Covid-19 lesion segmentations. The model uses 4 features for its prediction, namely
-1. "dice_scores" : Also called segmentation smoothness. Smoothness is defined as the average dice score between two censecutive slices of a connected component, which is again     averaged over all connected componentsin the segmentation.
+Using this repository, a linear classification model can be trained to predict the quality of a predicted Covid-19 lesion segmentations. The model uses 4 features for its prediction, namely
+1. "dice_scores" : Also called segmentation smoothness. Smoothness is defined as the average dice score between two consecutive slices of a connected component, which is again     averaged over all connected components in the segmentation.
 2. "connected components" : The number of connected components in the segmentation
 3. "gauss params" : The mean of a normal distribution fitted on sampled intensity values 
     of the 4 biggest components.
-4. "seg in lung" : the percentage of the segmented (as infectious tissue) area, that lies 
+4. "seg in lung" : The percentage of the segmented (as infectious tissue) area, that lies 
     within the segmentation of the lung 
     
 The classes range from 1 to 5, getting displayed as 0.2(corresponding to 1 and being the worst) to 1.0(corresponding to 5 and being the best) during inference. In our experiments we declared segmentations with a score of less or equal to 0.6 as 'failed'. 
@@ -23,7 +23,7 @@ The simplest way to install all dependencies is by using [Anaconda](https://cond
 ## Training and Inference using the model
 
 ## JIP Datastructure
-The whole preprocessing, training, retraining, testing and inference is based on the data stored in the following structure:
+The whole preprocessing, training and inference is based on the data stored in the following structure:
 
     ../JIP/
     ├── data_dirs/
@@ -54,7 +54,7 @@ The data for inference *-- data_dirs/input --* and training *-- train_dirs/input
 
 
 ## Data Pipeline
-The preprocessing and feature extraction of the data is done in the background for inference as well as for training and does not need to be done manually. Preprocessing consists of :
+The preprocessing and feature extraction of the data is done in the background for inference as well as for training and does not need to be done manually. The data pipeline consists of :
 1. Copying the data from the input directory into the preprocess directory and resizing it. 
 2. Masking out the segmented tissue with label unequal the given number (default value is 1) 
 3. Computation of the lung segmentations using https://github.com/JoHof/lungmask
