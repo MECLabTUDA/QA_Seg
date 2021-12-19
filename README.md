@@ -20,7 +20,7 @@ The simplest way to install all dependencies is by using [Anaconda](https://cond
 6. Execute `git update-index --assume-unchanged mp/paths.py` so that changes in the paths file are not tracked in the repository.
 
 
-## Training or Inference using the models
+## Training and Inference using the model
 
 ## JIP Datastructure
 The whole preprocessing, training, retraining, testing and inference is based on the data stored in the following structure:
