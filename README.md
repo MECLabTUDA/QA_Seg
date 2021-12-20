@@ -7,7 +7,7 @@ Using this repository, a linear classification model can be trained to predict t
 4. "seg in lung" : The percentage of the segmented (as infectious tissue) area, that lies 
     within the segmentation of the lung 
     
-The classes range from 1 to 5, getting displayed as 0.2(corresponding to 1 and being the worst) to 1.0(corresponding to 5 and being the best) during inference. In our experiments we declared segmentations with a score of less or equal to 0.6 as 'failed'. 
+The classes range from 1 to 5, getting displayed as 0.2 (corresponding to 1 and being the worst) to 1.0 (corresponding to 5 and being the best) during inference. In our experiments we declared segmentations with a score of less or equal to 0.6 as 'failed'. 
 
 ## Installation
 The simplest way to install all dependencies is by using [Anaconda](https://conda.io/projects/conda/en/latest/index.html):
@@ -31,6 +31,8 @@ The whole preprocessing, training and inference is based on the data stored in t
     |   │   ├── patient_00
     |   │   |    ├── img
     |   │   |       ├── img.nii.gz
+    |   │   |    ├── seg
+    |   │   |       ├── 001.nii.gz
     |   |   ├── ...
     │   ├── ...
     ├── preprocessed_dirs/
@@ -53,7 +55,7 @@ The whole preprocessing, training and inference is based on the data stored in t
 
 The corresponding paths need to be set in [paths.py](../mp/paths.py) before starting any process. For instance, only the `storage_path` variable needs to be set -- in the example above it would be `../JIP`.
 
-The data for inference *-- data_dirs/input --* and training *-- train_dirs/input --* needs to be provided by the user with respect to the previously introduced structure before starting any process. If this is not done properly, neither one of the later presented methods will work properly, since the data will not be found, thus resulting in an error during runtime. The preprocessed folder will be automatically generated during preprocessing and should not be changed by the user. Note that the folders (`patient_00`, etc.) can be named differently, however the name of the corresponding scan needs to be `img.nii.gz`, a Nifti file located in `img/` folder. The corresponding segmentation needs to be named `001.nii.gz`, also a Nifti file but located in the `seg/` folder. Since there can be multiple predictions for a single image during training, every prediction (and after preprocessing of the data also its extracted features) is stored in a seperated directory `<pred_model_name>` as `pred.nii.gz'.
+The data for inference *-- data_dirs/input --* and training *-- train_dirs/input --* needs to be provided by the user with respect to the previously introduced structure before starting any process. If this is not done properly, neither one of the later presented methods will work properly, since the data will not be found, thus resulting in an error during runtime. The preprocessed folder will be automatically generated during preprocessing and should not be changed by the user. Note that the folders (`patient_00`, etc.) can be named differently, however the name of the corresponding scan needs to be `img.nii.gz`, a Nifti file located in `img/` folder. The corresponding segmentation needs to be named `001.nii.gz`, also a Nifti file but located in the `seg/` folder. Since there can be multiple predicted segmentations for a single image during training, every prediction (and after preprocessing of the data also its extracted features) is stored in a seperated directory `<pred_model_name>` as `pred.nii.gz`.
 
 
 ## Data Pipeline
