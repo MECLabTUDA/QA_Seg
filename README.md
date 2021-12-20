@@ -40,17 +40,20 @@ The whole preprocessing, training and inference is based on the data stored in t
     |   │   ├── patient_00
     |   │   |    ├── img
     |   │   |       ├── img.nii.gz
+    |   │   |    ├── pred 
+    |   |   |       ├──<pred_model_name>  
+    |   │   |           ├── pred.nii.gz
+    |   |   |       ├── ...
     |   │   |    ├── seg
     |   │   |       ├── 001.nii.gz
-    |   │   |    ├── pred 
-    |   │   |       ├── 001.nii.gz
+
     |   |   ├── ...
     |   ├── ...
    
 
 The corresponding paths need to be set in [paths.py](../mp/paths.py) before starting any process. For instance, only the `storage_path` variable needs to be set -- in the example above it would be `../JIP`.
 
-The data for inference *-- data_dirs/input --* and training *-- train_dirs/input --* needs to be provided by the user with respect to the previously introduced structure before starting any process. If this is not done properly, neither one of the later presented methods will work properly, since the data will not be found, thus resulting in an error during runtime. The preprocessed folder will be automatically generated during preprocessing and should not be changed by the user. Note that the folders (`patient_00`, etc.) can be named differently, however the name of the corresponding scan needs to be `img.nii.gz`, a Nifti file located in `img/` folder. The corresponding segmentation needs to be named `001.nii.gz`, also a Nifti file but located in the `seg/` folder.
+The data for inference *-- data_dirs/input --* and training *-- train_dirs/input --* needs to be provided by the user with respect to the previously introduced structure before starting any process. If this is not done properly, neither one of the later presented methods will work properly, since the data will not be found, thus resulting in an error during runtime. The preprocessed folder will be automatically generated during preprocessing and should not be changed by the user. Note that the folders (`patient_00`, etc.) can be named differently, however the name of the corresponding scan needs to be `img.nii.gz`, a Nifti file located in `img/` folder. The corresponding segmentation needs to be named `001.nii.gz`, also a Nifti file but located in the `seg/` folder. Since there can be multiple predictions for a single image during training, every prediction (and after preprocessing of the data also its extracted features) is stored in a seperated directory `<pred_model_name>` as `pred.nii.gz'.
 
 
 ## Data Pipeline
@@ -60,6 +63,7 @@ The preprocessing and feature extraction of the data is done in the background f
 3. Computation of the lung segmentations using https://github.com/JoHof/lungmask
 4. Extracion of the 4 features for inference/training data
 The implementation of all preprocessing methods can be found in /mp/utils/preprocess_utility_functions' 
+The extracted features for an image-segmentation (image-segmentation-prediction for training) tuple are saved in the corresponding subfolder, eg `data_dirs/preprocessed_dirs/<train/inference dir>/patient_00/seg` for the segmentation of patient_00. `<train/inference dir>` is either `output_scaled` for inference or `output_scaled_train` for training. 
 
 ## Training classifiers
 After the data has been put into the train_dir as described above, the model can be trained by executing:
@@ -79,7 +83,7 @@ After sucessfull termination, the `metrics.json` file is generated under '*--dat
 ```
 {	
     "patient_00":	{
-                        TODO
+                        dice_pred:0.8
                     },
     ...
 }
