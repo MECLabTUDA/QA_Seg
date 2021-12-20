@@ -2,6 +2,7 @@ import os
 from mp.paths import JIP_dir
 import multiprocessing as mup
 import torch 
+import argparse
 
 # give random seed for intensity value sampling, to ensure reproducability if somehow
 # wanted.
@@ -26,15 +27,8 @@ os.environ["PREPROCESSED_OPERATOR_OUT_SCALED_DIR_TRAIN"] = "output_scaled_train"
 
 #dir where train data for intensites is stored (this only needs to be trains_dirs, but since i have more 
 # datasets, another subfolder is here)
-# os.environ["TRAIN_WORKFLOW_DIR"] = os.path.join(JIP_dir, 'train_dirs')
-os.environ["TRAIN_WORKFLOW_DIR"] = os.path.join(JIP_dir, 'train_dirs','proper_train_dirs')
+os.environ["TRAIN_WORKFLOW_DIR"] = os.path.join(JIP_dir, 'train_dirs')
 
-#ignore
-##below is for christian only, used for older data structures where models are trained on
-os.environ["TRAIN_WORKFLOW_DIR_GT"] = os.path.join('Covid-RACOON','All images and labels')
-os.environ["TRAIN_WORKFLOW_DIR_PRED"] = os.path.join('Covid-RACOON','All predictions')
-# os.environ["TRAIN_WORKFLOW_DIR_GT"] = os.path.join('gt_small')
-# os.environ["TRAIN_WORKFLOW_DIR_PRED"] = os.path.join('pred_small')
 
 #which mode is active either 'train' or 'inference' 
 os.environ["INFERENCE_OR_TRAIN"] = 'inference'
@@ -56,14 +50,25 @@ def train_workflow(preprocess=True,train_dice_pred=True,verbose=True, label=1):
     from train_restore_use_models.train_int_based_quantifier import train_int_based_quantifier
     train_int_based_quantifier(preprocess,train_dice_pred,verbose,label)
 
-def main():
-    inference()
+def main(args):
+    if args.mode == 'train':
+        train_workflow(label=args.label)
+    if args.mode == 'inference':
+        inference(label=args.label)
 
 if __name__ == '__main__' : 
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--mode', choices=['inference','train'], type=str)
+    parser.add_argument('--label', default=1,type=int,
+                        help='''The label of the segmented tissue in the nifti files''')
+    args = parser.parse_args()
+
     if not torch.cuda.is_available():
         # On my machine (home Laptop) this command is necessary to avoid an error message
         # while the lung segmentations are computed.
         # Since i expect the server to be able to handle multiprocessing, this will only be 
         # used when there is no server (so no cuda to do multiprocessing).
         mup.freeze_support()
-    main()
+        
+    main(args)
